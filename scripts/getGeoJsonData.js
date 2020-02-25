@@ -1,130 +1,144 @@
 const fs = require('fs');
 const axios = require('axios');
-const excelToJson = require('convert-excel-to-json');
-const jsonToExcel = require('json2xls');
+const XLSX = require('xlsx');
 
-// convert excel file to object
-const rawData = excelToJson({
-  sourceFile: `${__dirname}/data_v2.xlsx`
-});
+const sheetsJson = {}; // each property is a sheet
+const fileName = 'data_v2.xlsx';
+const fileOutput = 'data_v2_geo.xlsx';
+let workbook;
 
-const data = {};
-
-// Loop through each type of interest point (entreprises, labos, formations)
-for (const property in rawData) {
-  // array of interest points of 1 type
-  const interestPoints = [];
-
-  // Loop through each interest point of a type
-  for (let i = 1; i < rawData[property].length; i++) {
-    const ip = {};
-
-    if (property === 'ENTREPRISES') {
-      ip['type'] = 'Entreprise';
-    } else if (property === 'LABOS') {
-      ip['type'] = 'Labo';
-    } else if (property === 'FORMATIONS') {
-      ip['type'] = 'Formation';
-    } else {
-    }
-
-    // Loop through each property of an interest point
-    for (const prop in rawData[property][i]) {
-      ip[rawData[property][0][prop]] = rawData[property][i][prop];
-    }
-
-    // console.log(ip);
-    // add interest point to array
-    interestPoints.push(ip);
-  }
-
-  // add array as a property : data["ENTREPRISES"] = [...]
-  data[property] = interestPoints;
-}
-
-// const xls = jsonToExcel(rawData['ENTREPRISES']);
-const xls = jsonToExcel({
-  name: 'Ivy Dickson',
-  date: '2013-05-27T11:04:15-07:00',
-  number: 10,
-  nested: {
-    field: 'foo'
-  }
-});
-fs.writeFileSync('results.xlsx', xls, 'binary');
-// console.log(data);
-
-/*
-// Read JSON FILE
-const rawData = fs.readFileSync(`${__dirname}/dataExcelToJson.json`, 'utf-8');
-// console.log(rawData);
-
-const data = JSON.parse(rawData);
-// console.log(data);
-*/
-
-/*
-const api = 'https://api-adresse.data.gouv.fr/search/';
-
+const frenchGovApi = 'https://api-adresse.data.gouv.fr/search/';
 const requests = [];
 const ipWithCoordinates = [];
 const ipWithoutCoordinates = [];
+const latitudeMin = 48.830042;
+const latitudeMax = 51.089338;
+const longitudeMax = 4.25398;
+const longitudeMin = 1.378651;
 
-const getInterestPointCoordinates = ip => {
-  let querySearch = '';
-  if (ip.type === 'Entreprise') {
-    querySearch = `${ip.street} ${ip.location} ${ip.city}`;
-  } else if (ip.type === 'Labo') {
-    querySearch = `${ip.street} ${ip.fullName} ${ip.location}`;
-  } else if (ip.type === 'Formation') {
-    querySearch = `${ip.name} ${ip.street} ${ip.location}`;
+const getQuery = (ip, version) => {
+  let query = `${ip.street} ${ip.city} ${ip.postCode}`;
+
+  if (version === 1) {
+    if (ip.type === 'Entreprise') {
+      query = `${ip.street} ${ip.city} ${ip.postCode}`;
+    } else if (ip.type === 'Laboratoire') {
+      query = `${ip.street} ${ip.city} ${ip.name}`;
+    } else if (ip.type === 'Formation') {
+      query = `${ip.street} ${ip.city} ${ip.name}`;
+    }
+  } else if (version === 2) {
   }
 
+  return query;
+};
+
+// Get coordinates of an interest point (ip)
+const getCoordinatesFromFrenchGovApi = (ip, version) => {
+  const querySearch = getQuery(ip, version);
+
   return axios
-    .get(api, {
-      params: { q: `${querySearch}`, limit: 1, postcode: ip.postCode }
+    .get(frenchGovApi, {
+      params: { q: `${querySearch}`, limit: 1 /*postcode: ip.postCode */ }
     })
     .then(res => {
-      if (res.data.features.length > 0) {
-        ip['coordinates'] = res.data.features[0].geometry.coordinates;
+      // API sent results
+      if (
+        res.data.features.length > 0 &&
+        res.data.features[0].geometry.coordinates[1] > latitudeMin &&
+        res.data.features[0].geometry.coordinates[1] < latitudeMax &&
+        res.data.features[0].geometry.coordinates[0] > longitudeMin &&
+        res.data.features[0].geometry.coordinates[0] < longitudeMax
+      ) {
+        // ip['coordinates'] = res.data.features[0].geometry.coordinates;
         ip['latitude'] = res.data.features[0].geometry.coordinates[1];
         ip['longitude'] = res.data.features[0].geometry.coordinates[0];
         ipWithCoordinates.push(ip);
-        console.log(`${ip.name} got coordinates : ${ip.coordinates}`);
-      } else {
+        console.log(`${ip.name} got coordinates : [${ip.latitude}:${ip.longitude}]`);
+      }
+      // API did not send results
+      else {
         console.log(`---> GPS coordinates not found for ${ip.name}, retry with name`);
         ipWithoutCoordinates.push(ip);
       }
+      return Promise.resolve();
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      return Promise.reject();
+    });
 };
 
-for (const property in data) {
-  data[property].forEach(ip => {
+const writeFiles = () => {
+  try {
+    const results = JSON.stringify(ipWithCoordinates);
+    fs.writeFileSync(`${__dirname}/data.json`, results);
+    console.log('---> RESULTS WRITTEN');
+
+    if (ipWithoutCoordinates.length > 0) {
+      const errors = JSON.stringify(ipWithoutCoordinates);
+      fs.writeFileSync(`${__dirname}/dataIncomplete.json`, errors);
+      console.log('---> ERRORS WRITTEN');
+    }
+
+    // Convert each json sheet to a json array and add it has a property of sheetsJson
+    for (const property in workbook.Sheets) {
+      workbook.Sheets[property] = XLSX.utils.json_to_sheet(sheetsJson[property]);
+    }
+
+    XLSX.writeFile(workbook, `${__dirname}/${fileOutput}`);
+    console.log('---> EXCEL FILE WRITTEN');
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// READ and CONVERT excel to json
+try {
+  workbook = XLSX.readFile(`${__dirname}/${fileName}`, { raw: true }); // excel workbook
+
+  // Convert each workbook sheet to a json array and add it has a property of sheetsJson
+  for (const property in workbook.Sheets) {
+    const sheetJson = XLSX.utils.sheet_to_json(workbook.Sheets[property]);
+    sheetsJson[property] = sheetJson;
+    // sheetJson.forEach(el => console.log(el.latitude + ' ' + el.longitude));
+  }
+} catch (err) {
+  console.log(err);
+}
+
+// For each interest point
+for (const property in sheetsJson) {
+  sheetsJson[property].forEach(ip => {
+    // If ip has no coordinates, push the promise to a promise array
     if (!ip.hasOwnProperty('latitude') || !ip.hasOwnProperty('longitude')) {
-      requests.push(getInterestPointCoordinates(ip));
-    } else {
-      ip['coordinates'] = [ip['longitude'], ip['latitude']];
+      requests.push(getCoordinatesFromFrenchGovApi(ip, 1));
+    }
+    // Else, form the coordinates with latitude and longitude from excel data
+    else {
+      // parse string to number with + operator
+      ip['longitude'] = +ip['longitude'];
+      ip['latitude'] = +ip['latitude'];
+      // ip['coordinates'] = [ip['longitude'], ip['latitude']];
       ipWithCoordinates.push(ip);
     }
   });
 }
 
-axios.all(requests).then(
-  axios.spread(function(acct, perms) {
-    console.log('---> ALL PROMISES DONE');
-    const results = JSON.stringify(ipWithCoordinates);
-    fs.writeFileSync('results.json', results);
-    console.log('---> RESULTS WRITTEN');
-    // POST TO DB RESULTS
+axios.all(requests).then(() => {
+  writeFiles();
+  // if (ipWithoutCoordinates.length > 0) {
+  //   ipWithoutCoordinates.forEach(ip => {});
+  // }
+});
+// axios.all(requests).then(
+//   axios.spread(function(acct, perms) {
+//     console.log('---> FIRST ITERATION DONE');
 
-    if (ipWithoutCoordinates.length > 0) {
-      const errors = JSON.stringify(ipWithoutCoordinates);
-      fs.writeFileSync('errors.json', errors);
-      console.log('---> ERRORS WRITTEN');
-      // NOT ENOUGH DATA TO GET A GPS COORDINATES
-    }
-  })
-);
+//     // if () {
 
-*/
+//     // }
+
+//     writeFiles();
+//   })
+// );
