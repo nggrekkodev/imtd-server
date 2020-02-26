@@ -104,6 +104,11 @@ try {
 // For each interest point
 for (const property in sheetsJson) {
   sheetsJson[property].forEach(ip => {
+    const typeLowerCase = property.toLowerCase();
+    const type = typeLowerCase.charAt(0).toUpperCase() + typeLowerCase.slice(0, -1).slice(1);
+    console.log(type);
+    ip['type'] = type;
+
     // If ip has no coordinates, push the promise to a promise array
     if (!ip.hasOwnProperty('latitude') || !ip.hasOwnProperty('longitude')) {
       requests.push(getCoordinatesFromFrenchGovApi(ip, 1));
