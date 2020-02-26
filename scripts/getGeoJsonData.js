@@ -4,7 +4,7 @@ const XLSX = require('xlsx');
 
 const sheetsJson = {}; // each property is a sheet
 const fileName = 'data_v2.xlsx';
-const fileOutput = 'data_v2_geo.xlsx';
+const fileOutput = 'data_v2_results.xlsx';
 let workbook;
 
 const frenchGovApi = 'https://api-adresse.data.gouv.fr/search/';
@@ -34,39 +34,33 @@ const getQuery = (ip, version) => {
 };
 
 // Get coordinates of an interest point (ip)
-const getCoordinatesFromFrenchGovApi = (ip, version) => {
+const getCoordinatesFromFrenchGovApi = async (ip, version) => {
   const querySearch = getQuery(ip, version);
 
-  return axios
-    .get(frenchGovApi, {
-      params: { q: `${querySearch}`, limit: 1 /*postcode: ip.postCode */ }
-    })
-    .then(res => {
-      // API sent results
-      if (
-        res.data.features.length > 0 &&
-        res.data.features[0].geometry.coordinates[1] > latitudeMin &&
-        res.data.features[0].geometry.coordinates[1] < latitudeMax &&
-        res.data.features[0].geometry.coordinates[0] > longitudeMin &&
-        res.data.features[0].geometry.coordinates[0] < longitudeMax
-      ) {
-        // ip['coordinates'] = res.data.features[0].geometry.coordinates;
-        ip['latitude'] = res.data.features[0].geometry.coordinates[1];
-        ip['longitude'] = res.data.features[0].geometry.coordinates[0];
-        ipWithCoordinates.push(ip);
-        console.log(`${ip.name} got coordinates : [${ip.latitude}:${ip.longitude}]`);
-      }
-      // API did not send results
-      else {
-        console.log(`---> GPS coordinates not found for ${ip.name}, retry with name`);
-        ipWithoutCoordinates.push(ip);
-      }
-      return Promise.resolve();
-    })
-    .catch(err => {
-      console.log(err);
-      return Promise.reject();
-    });
+  const res = await axios.get(frenchGovApi, {
+    params: { q: `${querySearch}`, limit: 1 /*postcode: ip.postCode */ }
+  });
+
+  // API sent results
+  if (
+    res.data.features.length > 0 &&
+    res.data.features[0].geometry.coordinates[1] > latitudeMin &&
+    res.data.features[0].geometry.coordinates[1] < latitudeMax &&
+    res.data.features[0].geometry.coordinates[0] > longitudeMin &&
+    res.data.features[0].geometry.coordinates[0] < longitudeMax
+  ) {
+    // ip['coordinates'] = res.data.features[0].geometry.coordinates;
+    ip['latitude'] = res.data.features[0].geometry.coordinates[1];
+    ip['longitude'] = res.data.features[0].geometry.coordinates[0];
+    ipWithCoordinates.push(ip);
+    console.log(`${ip.name} got coordinates : [${ip.latitude}:${ip.longitude}]`);
+  }
+  // API did not send results
+  else {
+    console.log(`---> GPS coordinates not found for ${ip.name}, retry with name`);
+    ipWithoutCoordinates.push(ip);
+  }
+  return true;
 };
 
 const writeFiles = () => {
