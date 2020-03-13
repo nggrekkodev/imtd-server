@@ -2,6 +2,15 @@ const fs = require('fs');
 const axios = require('axios');
 const XLSX = require('xlsx');
 
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const PointOfInterest = require('../models/poiModel');
+
+// Read env variables from the file and save them into node env variables
+dotenv.config({ path: './config.env' });
+
+const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
+
 const sheetsJson = {}; // each property is a sheet
 const fileName = 'data_v2.xlsx';
 const fileOutput = 'data_v2_results.xlsx';
@@ -136,6 +145,32 @@ for (const property in sheetsJson) {
   });
 }
 
-axios.all(requests).then(() => {
+// const connection = mongoose.connect(DB, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useCreateIndex: true,
+//   useFindAndModify: false
+// });
+
+const connection = new Promise((resolve, reject) => {
+  mongoose
+    .connect(DB, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false
+    })
+    .then(() => {
+      console.log('Connection to DB');
+      resolve();
+    })
+    .catch(error => {
+      console.log(err);
+      reject();
+    });
+});
+
+axios.all([...requests, connection]).then(() => {
+  console.log('All requests done');
   writeFiles();
 });
