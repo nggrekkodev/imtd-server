@@ -16,6 +16,7 @@ const latitudeMax = 51.089338;
 const longitudeMax = 4.25398;
 const longitudeMin = 1.378651;
 
+// Construct the query for the API
 const getQuery = (ip, version) => {
   let query = `${ip.street} ${ip.city} ${ip.postCode}`;
 
@@ -41,7 +42,7 @@ const getCoordinatesFromFrenchGovApi = async (ip, version) => {
     params: { q: `${querySearch}`, limit: 1 /*postcode: ip.postCode */ }
   });
 
-  // API sent results
+  // If the request gets a valid result
   if (
     res.data.features.length > 0 &&
     res.data.features[0].geometry.coordinates[1] > latitudeMin &&
@@ -52,12 +53,15 @@ const getCoordinatesFromFrenchGovApi = async (ip, version) => {
     // ip['coordinates'] = res.data.features[0].geometry.coordinates;
     ip['latitude'] = res.data.features[0].geometry.coordinates[1];
     ip['longitude'] = res.data.features[0].geometry.coordinates[0];
+
+    // Add the valid interest point to array of ip's with coordinates
     ipWithCoordinates.push(ip);
     console.log(`${ip.name} got coordinates : [${ip.latitude}:${ip.longitude}]`);
   }
-  // API did not send results
+  // Request without a valid result
   else {
     console.log(`---> GPS coordinates not found for ${ip.name}, retry with name`);
+    // Add the invalid interest point to array of ip's without coordinates
     ipWithoutCoordinates.push(ip);
   }
   return true;
@@ -65,23 +69,25 @@ const getCoordinatesFromFrenchGovApi = async (ip, version) => {
 
 const writeFiles = () => {
   try {
+    // Write valid results to data.json
     const results = JSON.stringify(ipWithCoordinates);
     fs.writeFileSync(`${__dirname}/data.json`, results);
-    console.log('---> RESULTS WRITTEN');
+    console.log(`---> Valid results written in ${__dirname}/data.json`);
 
+    // Write invalid results to dataIncomplete.json
     if (ipWithoutCoordinates.length > 0) {
       const errors = JSON.stringify(ipWithoutCoordinates);
       fs.writeFileSync(`${__dirname}/dataIncomplete.json`, errors);
-      console.log('---> ERRORS WRITTEN');
+      console.log(`---> Invalid results written in ${__dirname}/dataIncomplete.json`);
     }
 
     // Convert each json sheet to a json array and add it has a property of sheetsJson
     for (const property in workbook.Sheets) {
       workbook.Sheets[property] = XLSX.utils.json_to_sheet(sheetsJson[property]);
     }
-
+    // Write workbook data to a new xlsx file
     XLSX.writeFile(workbook, `${__dirname}/${fileOutput}`);
-    console.log('---> EXCEL FILE WRITTEN');
+    console.log(`---> New excel file created : ${__dirname}/${fileOutput}`);
   } catch (error) {
     console.log(error);
   }
@@ -126,18 +132,4 @@ for (const property in sheetsJson) {
 
 axios.all(requests).then(() => {
   writeFiles();
-  // if (ipWithoutCoordinates.length > 0) {
-  //   ipWithoutCoordinates.forEach(ip => {});
-  // }
 });
-// axios.all(requests).then(
-//   axios.spread(function(acct, perms) {
-//     console.log('---> FIRST ITERATION DONE');
-
-//     // if () {
-
-//     // }
-
-//     writeFiles();
-//   })
-// );
