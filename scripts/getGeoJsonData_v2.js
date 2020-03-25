@@ -4,7 +4,6 @@ const XLSX = require('xlsx');
 
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const PointOfInterest = require('../models/poiModel');
 
 // Read env variables from the file and save them into node env variables
 dotenv.config({ path: './config.env' });
@@ -173,4 +172,5 @@ const connection = new Promise((resolve, reject) => {
 axios.all([...requests, connection]).then(() => {
   console.log('All requests done');
   writeFiles();
+  process.exit(1);
 });

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-// Point Of Interest
-const poiSchema = new mongoose.Schema({
+// Schema of a Location
+const locationSchema = new mongoose.Schema({
   sector: {
     type: String
   },
@@ -64,6 +64,6 @@ const poiSchema = new mongoose.Schema({
   }
 });
 
-const PointOfInterest = mongoose.model('PointOfInterest', poiSchema);
+const Location = mongoose.model('Location', locationSchema);
 
-module.exports = PointOfInterest;
+module.exports = Location;
