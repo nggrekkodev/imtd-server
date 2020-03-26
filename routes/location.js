@@ -1,9 +1,25 @@
 const express = require('express');
 const router = express.Router();
 
-const { getAllLocations } = require('./../controllers/locationController');
+const {
+  getLocations,
+  getLocation,
+  createLocation,
+  updateLocation,
+  deleteLocation
+} = require('./../controllers/location');
+const { protect, restrictTo } = require('./../controllers/authentification');
 
-router.route('/').get(getAllLocations);
+router
+  .route('/')
+  .get(getLocations)
+  .get(getLocation)
+  .post(protect, restrictTo('admin'), createLocation);
+
+router
+  .route('/:id')
+  .put(protect, restrictTo('admin'), updateLocation)
+  .delete(protect, restrictTo('admin'), deleteLocation);
 
 // router
 //   .route('/:id')

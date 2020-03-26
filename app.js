@@ -11,12 +11,11 @@ const chalk = require('chalk');
 
 // Import routers
 const locationRouter = require('./routes/location');
-// const tourRouter = require('./routes/tourRoutes');
-// const userRouter = require('./routes/userRoutes');
-// const reviewRouter = require('./routes/reviewRoutes');
+const userRouter = require('./routes/user');
 
+// Import Custom Error and global error handler
 const AppError = require('./utils/AppError');
-const globalErrorHandler = require('./controllers/errorController');
+const globalErrorHandler = require('./controllers/error');
 
 const app = express();
 
@@ -37,7 +36,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // Rate Limiter : Allow 100 requests from the same IP in 1 hour
 const limiter = rateLimit({
-  max: 100,
+  max: 1000,
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour !'
 });
@@ -82,16 +81,19 @@ app.use(xss());
 
 // Route middlewares
 app.use('/api/v1/locations', locationRouter);
+app.use('/api/v1/users', userRouter);
 // app.use('/api/v1/tours', tourRouter);
-// app.use('/api/v1/users', userRouter);
 // app.use('/api/v1/reviews', reviewRouter);
 
 // 404 Route
 app.all('*', (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server !`, 404));
+  next(new AppError(`Erreur 404 Page not found`, 404));
 });
 
-// ERROR HANDLING MIDDLEWARE (4 arguments)
+/**
+ * ERROR HANDLING MIDDLEWARE (4 arguments)
+ * When next() receives 4 arguments, triggers this middleware
+ */
 app.use(globalErrorHandler);
 
 // Export the application configuration

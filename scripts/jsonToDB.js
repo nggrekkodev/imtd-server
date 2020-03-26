@@ -1,7 +1,7 @@
 const fs = require('fs');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const PointOfInterest = require('./../models/poiModel');
+const Location = require('./../models/Location');
 
 // Read env variables from the file and save them into node env variables
 dotenv.config({ path: './config.env' });
@@ -21,13 +21,13 @@ mongoose
   .catch(err => console.log(err));
 
 // Read json file
-const pois = JSON.parse(fs.readFileSync(`${__dirname}/data.json`, 'utf-8'));
+const locations = JSON.parse(fs.readFileSync(`${__dirname}/data.json`, 'utf-8'));
 
 // Import data into db
 const importData = async () => {
   try {
     // Skip validation
-    await PointOfInterest.create(pois, { validateBeforeSave: false });
+    await Location.create(locations, { validateBeforeSave: false });
     console.log('Data successfully loaded');
   } catch (error) {
     console.log(error);
@@ -38,7 +38,7 @@ const importData = async () => {
 // Delete all data from db
 const deleteData = async () => {
   try {
-    await PointOfInterest.deleteMany();
+    await Location.deleteMany();
     console.log('Data successfully deleted');
   } catch (error) {
     console.log(error);
