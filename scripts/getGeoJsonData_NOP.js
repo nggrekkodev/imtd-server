@@ -49,7 +49,7 @@ const getCoordinatesFromFrenchGovApi = async (ip, version) => {
   let res;
   try {
     res = await axios.get(frenchGovApi, {
-      params: { q: `${querySearch}`, limit: 1 /*postcode: ip.postCode */ }
+      params: { q: `${querySearch}`, limit: 1 /*postcode: ip.postCode */ },
     });
   } catch (error) {
     console.log(error);
@@ -123,7 +123,7 @@ try {
 
 // For each interest point
 for (const property in sheetsJson) {
-  sheetsJson[property].forEach(ip => {
+  sheetsJson[property].forEach((ip) => {
     const typeLowerCase = property.toLowerCase();
     const type = typeLowerCase.charAt(0).toUpperCase() + typeLowerCase.slice(0, -1).slice(1);
     console.log(type);
@@ -157,13 +157,13 @@ const connection = new Promise((resolve, reject) => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
-      useFindAndModify: false
+      useFindAndModify: false,
     })
     .then(() => {
       console.log('Connection to DB');
       resolve();
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(err);
       reject();
     });

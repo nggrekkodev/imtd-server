@@ -41,7 +41,7 @@ const getCoordinatesFromFrenchGovApi = async (ip, version) => {
   let res;
   try {
     res = await axios.get(frenchGovApi, {
-      params: { q: `${querySearch}`, limit: 1 /*postcode: ip.postCode */ }
+      params: { q: `${querySearch}`, limit: 1 /*postcode: ip.postCode */ },
     });
   } catch (error) {
     console.log(error);
@@ -59,6 +59,11 @@ const getCoordinatesFromFrenchGovApi = async (ip, version) => {
     // ip['coordinates'] = res.data.features[0].geometry.coordinates;
     ip['latitude'] = res.data.features[0].geometry.coordinates[1];
     ip['longitude'] = res.data.features[0].geometry.coordinates[0];
+
+    ip['position'] = {
+      type: 'Point',
+      coordinates: [ip.longitude, ip.latitude],
+    };
 
     // Add the valid interest point to array of ip's with coordinates
     ipWithCoordinates.push(ip);
@@ -115,7 +120,7 @@ try {
 
 // For each interest point
 for (const property in sheetsJson) {
-  sheetsJson[property].forEach(ip => {
+  sheetsJson[property].forEach((ip) => {
     const typeLowerCase = property.toLowerCase();
     const type = typeLowerCase.charAt(0).toUpperCase() + typeLowerCase.slice(0, -1).slice(1);
     console.log(type);

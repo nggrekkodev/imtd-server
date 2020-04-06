@@ -14,39 +14,8 @@
     "logo": "alstom-logo-png-5.png",
     "type": "Entreprise",
     "latitude": 50.382017,
-    "longitude": 3.476516
-  },
-  {
-    "sector": "Automobile, Ferroviaire, Aéronautique",
-    "name": "ALTRAN",
-    "street": "360 rue Marc Lefrancq",
-    "location": "Les Ateliers Numériques",
-    "postCode": 59300,
-    "city": "VALENCIENNES",
-    "phone": "03 27 31 45 68",
-    "website": "www.altran.com",
-    "numbers": 350,
-    "description": "Altran Technologies est une société de conseils en Ingénierie pour l’ensemble des secteurs industriels. L'agence de Valenciennes travaille exclusivement  dans le domaine ferroviaire (mécanique, l’électrique, la conformité aux exigences, la logistique, la qualité, les méthodes....)\r\n",
-    "image": "Image1.jpg",
-    "logo": "RVB_ALTRAN_HD.png",
-    "type": "Entreprise",
-    "latitude": 50.366328,
-    "longitude": 3.529479
-  },
-  {
-    "sector": "Automobile ",
-    "name": "AGRATI",
-    "street": "2-4 rue Dervaux",
-    "postCode": 59690,
-    "city": "VIEUX-CONDÉ",
-    "phone": "03 27 19 15 00",
-    "website": "www.agrati.com",
-    "numbers": 290,
-    "description": "Fournisseur majeur de fixations techniques pour les constructeurs automobiles, la société est présente principalement dans le secteur des constructeurs et équipementiers automobiles mais fournit également l’industrie, l’électroménager et la distribution.",
-    "logo": "AGRATI_Logo_AGRATI_FRANCE.jpg",
-    "type": "Entreprise",
-    "latitude": 50.457245,
-    "longitude": 3.571979
+    "longitude": 3.476516,
+    "position": { "type": "Point", "coordinates": [3.476516, 50.382017] }
   },
   {
     "sector": "Automobile, Ferroviaire, Aéronautique",
@@ -64,7 +33,25 @@
     "logo": "lamih-2015-308px.png",
     "type": "Labo",
     "latitude": 50.319384,
-    "longitude": 3.509646
+    "longitude": 3.509646,
+    "position": { "type": "Point", "coordinates": [3.509646, 50.319384] }
+  },
+  {
+    "sector": "Automobile, Ferroviaire, Aéronautique",
+    "name": "ALTEN",
+    "street": "2 rue Horus Immeuble Les Gradins",
+    "location": "Parc Scientifique de le Haute Borne",
+    "postCode": 59650,
+    "city": "VILLENEUVE D'ASCQ",
+    "phone": "03 20 30 25 25",
+    "website": "www.alten.fr",
+    "numbers": 300,
+    "description": "Alten, leader européen de l’Ingénierie et du Conseil en Technologies, accompagne la stratégie de développement de ses clients dans les domaines de l’innovation, de la R&D et des systèmes d’information technologiques. Ses 21300 consultants ingénieurs de haut niveau réalisent des projets de conception et d’études pour les Directions Techniques et les Directions des Systèmes d’Information des grands comptes industriels, télécoms et tertiaires. \r\n\r\n",
+    "image": "shutterstock_163822697.jpg",
+    "type": "Entreprise",
+    "latitude": 50.608265,
+    "longitude": 3.16046,
+    "position": { "type": "Point", "coordinates": [3.16046, 50.608265] }
   },
   {
     "sector": "Automobile ",
@@ -79,23 +66,8 @@
     "logo": "Abylsen logo_CMJN_Baseline bleueOK.eps",
     "type": "Entreprise",
     "latitude": 50.640852,
-    "longitude": 3.018214
-  },
-  {
-    "sector": "Automobile ",
-    "name": "ADES METROLOGY",
-    "street": "257 ter rue du Pont de Pierre",
-    "location": "ZI de la Petite Savate",
-    "postCode": 59600,
-    "city": "MAUBEUGE",
-    "phone": "03 27 39 70 38",
-    "website": "www.ades-metrology.com",
-    "numbers": 5,
-    "description": "ADES aide ses clients à répondre aux exigences normatives au juste nécessaire en garantissant une plus grande fiabilité. La métrologie doit pouvoir apporter un gain de productivité et non un coût supplémentaire.",
-    "logo": "ADES_Logo ADES - rev 02.jpg",
-    "type": "Entreprise",
-    "latitude": 50.284784,
-    "longitude": 3.962909
+    "longitude": 3.018214,
+    "position": { "type": "Point", "coordinates": [3.018214, 50.640852] }
   },
   {
     "sector": "Ferroviaire",
@@ -112,7 +84,47 @@
     "logo": "lamcublogo.png",
     "type": "Labo",
     "latitude": 50.606301,
-    "longitude": 3.135407
+    "longitude": 3.135407,
+    "position": { "type": "Point", "coordinates": [3.135407, 50.606301] }
+  },
+  {
+    "sector": "Automobile, Ferroviaire, Aéronautique",
+    "name": "ALTRAN",
+    "street": "360 rue Marc Lefrancq",
+    "location": "Les Ateliers Numériques",
+    "postCode": 59300,
+    "city": "VALENCIENNES",
+    "phone": "03 27 31 45 68",
+    "website": "www.altran.com",
+    "numbers": 350,
+    "description": "Altran Technologies est une société de conseils en Ingénierie pour l’ensemble des secteurs industriels. L'agence de Valenciennes travaille exclusivement  dans le domaine ferroviaire (mécanique, l’électrique, la conformité aux exigences, la logistique, la qualité, les méthodes....)\r\n",
+    "image": "Image1.jpg",
+    "logo": "RVB_ALTRAN_HD.png",
+    "type": "Entreprise",
+    "latitude": 50.366328,
+    "longitude": 3.529479,
+    "position": { "type": "Point", "coordinates": [3.529479, 50.366328] }
+  },
+  {
+    "sector": "Ferroviaire",
+    "shortName": "CIFFCO",
+    "name": "CENTRE INTERNATIONAL DE FORMATION FERROVIAIRE DE LA CÔTE D'OPALE",
+    "street": "1 BD DE L EUROPE",
+    "postCode": 62231,
+    "city": "COQUELLES",
+    "website": "https://www.ciffco.com/",
+    "formationLevel": "o",
+    "initiale": "o",
+    "continue": "x",
+    "alternance": "o",
+    "apprentissage": "o",
+    "vae": "x",
+    "description": "CIFFCO forme les nouvelles recrues de toute entreprise ferroviaire\r\ntravaillant sur réseau ferré national ou réseau privé.",
+    "logo": "ciffco.jpg",
+    "type": "Formation",
+    "latitude": 50.934099,
+    "longitude": 1.808739,
+    "position": { "type": "Point", "coordinates": [1.808739, 50.934099] }
   },
   {
     "sector": "Automobile, Ferroviaire, Aéronautique",
@@ -133,7 +145,8 @@
     "logo": "Logo_Reseau_Polytech.svg.png",
     "type": "Formation",
     "latitude": 50.606301,
-    "longitude": 3.135407
+    "longitude": 3.135407,
+    "position": { "type": "Point", "coordinates": [3.135407, 50.606301] }
   },
   {
     "sector": "Automobile, Ferroviaire, Aéronautique",
@@ -155,27 +168,41 @@
     "logo": "IMT_Lille_Douai_Logo_WEB.png",
     "type": "Formation",
     "latitude": 50.374027,
-    "longitude": 3.067359
+    "longitude": 3.067359,
+    "position": { "type": "Point", "coordinates": [3.067359, 50.374027] }
   },
   {
-    "sector": "Ferroviaire",
-    "shortName": "CIFFCO",
-    "name": "CENTRE INTERNATIONAL DE FORMATION FERROVIAIRE DE LA CÔTE D'OPALE",
-    "street": "1 BD DE L EUROPE",
-    "postCode": 62231,
-    "city": "COQUELLES",
-    "website": "https://www.ciffco.com/",
-    "formationLevel": "o",
-    "initiale": "o",
-    "continue": "x",
-    "alternance": "o",
-    "apprentissage": "o",
-    "vae": "x",
-    "description": "CIFFCO forme les nouvelles recrues de toute entreprise ferroviaire\r\ntravaillant sur réseau ferré national ou réseau privé.",
-    "logo": "ciffco.jpg",
-    "type": "Formation",
-    "latitude": 50.93243,
-    "longitude": 1.820529
+    "sector": "Automobile ",
+    "name": "AGRATI",
+    "street": "2-4 rue Dervaux",
+    "postCode": 59690,
+    "city": "VIEUX-CONDÉ",
+    "phone": "03 27 19 15 00",
+    "website": "www.agrati.com",
+    "numbers": 290,
+    "description": "Fournisseur majeur de fixations techniques pour les constructeurs automobiles, la société est présente principalement dans le secteur des constructeurs et équipementiers automobiles mais fournit également l’industrie, l’électroménager et la distribution.",
+    "logo": "AGRATI_Logo_AGRATI_FRANCE.jpg",
+    "type": "Entreprise",
+    "latitude": 50.457245,
+    "longitude": 3.571979,
+    "position": { "type": "Point", "coordinates": [3.571979, 50.457245] }
+  },
+  {
+    "sector": "Automobile ",
+    "name": "ADES METROLOGY",
+    "street": "257 ter rue du Pont de Pierre",
+    "location": "ZI de la Petite Savate",
+    "postCode": 59600,
+    "city": "MAUBEUGE",
+    "phone": "03 27 39 70 38",
+    "website": "www.ades-metrology.com",
+    "numbers": 5,
+    "description": "ADES aide ses clients à répondre aux exigences normatives au juste nécessaire en garantissant une plus grande fiabilité. La métrologie doit pouvoir apporter un gain de productivité et non un coût supplémentaire.",
+    "logo": "ADES_Logo ADES - rev 02.jpg",
+    "type": "Entreprise",
+    "latitude": 50.284784,
+    "longitude": 3.962909,
+    "position": { "type": "Point", "coordinates": [3.962909, 50.284784] }
   },
   {
     "sector": "Automobile, Ferroviaire, Aéronautique",
@@ -192,23 +219,8 @@
     "description": "Ce laboratoire créé en 2000, regroupe actuellement une quinzaine d’enseignants-chercheurs au sein d’une même équipe « Aide à la Décision ». Les domaines d'applications phares de notre laboratoire concernent la Logistique et la Mobilité durables. Dans ce domaine, nous cherchons grâce aux nouvelles avancées des technologies de l’information et de la communication à améliorer les déplacements des personnes",
     "logo": "lgi2a_logo.jpeg",
     "type": "Labo",
-    "latitude": 50.513812,
-    "longitude": 2.658348
-  },
-  {
-    "sector": "Automobile, Ferroviaire, Aéronautique",
-    "name": "ALTEN",
-    "street": "2 rue Horus Immeuble Les Gradins",
-    "location": "Parc Scientifique de le Haute Borne",
-    "postCode": 59650,
-    "city": "VILLENEUVE D'ASCQ",
-    "phone": "03 20 30 25 25",
-    "website": "www.alten.fr",
-    "numbers": 300,
-    "description": "Alten, leader européen de l’Ingénierie et du Conseil en Technologies, accompagne la stratégie de développement de ses clients dans les domaines de l’innovation, de la R&D et des systèmes d’information technologiques. Ses 21300 consultants ingénieurs de haut niveau réalisent des projets de conception et d’études pour les Directions Techniques et les Directions des Systèmes d’Information des grands comptes industriels, télécoms et tertiaires. \r\n\r\n",
-    "image": "shutterstock_163822697.jpg",
-    "type": "Entreprise",
-    "latitude": 50.619205,
-    "longitude": 3.143694
+    "latitude": 50.518746,
+    "longitude": 2.645622,
+    "position": { "type": "Point", "coordinates": [2.645622, 50.518746] }
   }
 ]

@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
+const fileupload = require('express-fileupload');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const rateLimit = require('express-rate-limit');
@@ -23,6 +24,9 @@ const app = express();
 // app.set('view engine', 'pug');
 // app.set('views', path.join(__dirname, 'views'));
 
+// File uploading
+app.use(fileupload());
+
 // Set public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -38,7 +42,7 @@ if (process.env.NODE_ENV === 'development') {
 const limiter = rateLimit({
   max: 1000,
   windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in an hour !'
+  message: 'Too many requests from this IP, please try again in an hour !',
 });
 
 // affect the limiter to all routes starting with '/api'
