@@ -16,11 +16,20 @@ exports.getLocations = catchAsync(async (req, res, next) => {
 });
 
 exports.getLocations2 = catchAsync(async (req, res, next) => {
-  console.log(req.query.sector);
+  if (req.query.type) {
+    req.query.type = { in: req.query.type.in.split(',') };
+    console.log(req.query.type);
+  }
 
-  const sectorValue = req.query.sector.in.split(',');
-  req.query.sector = { in: sectorValue };
-  console.log(req.query.sector);
+  if (req.query.sector) {
+    req.query.sector = { in: req.query.sector.in.split(',') };
+    console.log(req.query.sector);
+  }
+
+  if (req.query.departmentCode) {
+    req.query.departmentCode = { in: req.query.departmentCode.in.split(',') };
+    console.log(req.query.sector);
+  }
 
   const features = new APIFeatures(Location.find(), req.query).filter().sort().limitFields().paginate();
 

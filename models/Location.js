@@ -2,6 +2,28 @@ const mongoose = require('mongoose');
 
 const sectors = ['Aéronautique', 'Automobile', 'Ferroviaire', 'Autre'];
 const types = ['Entreprise', 'Laboratoire', 'Formation'];
+const departments = [
+  {
+    name: 'Aisne',
+    code: 02,
+  },
+  {
+    name: 'Nord',
+    code: 59,
+  },
+  {
+    name: 'Oise',
+    code: 60,
+  },
+  {
+    name: 'Pas-de-Calais',
+    code: 62,
+  },
+  {
+    name: 'Somme',
+    code: 80,
+  },
+];
 
 // Schema of a Location
 const locationSchema = new mongoose.Schema({
@@ -46,9 +68,15 @@ const locationSchema = new mongoose.Schema({
   },
   postCode: {
     type: String,
-    // required: [true, 'Une localisation doit avoir un code postal']
+    required: [true, 'Une localisation doit avoir un code postal'],
   },
   city: {
+    type: String,
+  },
+  departmentCode: {
+    type: Number,
+  },
+  departmentName: {
     type: String,
   },
   phone: {
@@ -109,6 +137,26 @@ const locationSchema = new mongoose.Schema({
     },
     coordinates: [Number],
   },
+});
+
+locationSchema.pre('save', function (next) {
+  // Add position field (geojson)
+  this.position = {
+    type: 'Point',
+    coordinates: [this.longitude, this.latitude],
+  };
+
+  // Add department name and code
+  this.departmentCode = +this.postCode.slice(0, 2);
+  console.log(this.departmentCode);
+  department = departments.find((dep) => dep.code === this.departmentCode);
+  if (department) {
+    this.departmentName = department.name;
+  } else {
+    this.departmentName = 'error';
+  }
+
+  next();
 });
 
 const Location = mongoose.model('Location', locationSchema);

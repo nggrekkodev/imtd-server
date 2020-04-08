@@ -18,7 +18,7 @@ class APIFeatures {
     let queryString = JSON.stringify(queryObj);
 
     // Use a regular expression to replace
-    queryString = queryString.replace(/\b(gte|gt|lte|lt|in)\b/g, (match) => `$${match}`);
+    queryString = queryString.replace(/\b(gte|gt|lte|lt|in|all)\b/g, (match) => `$${match}`);
 
     console.log(queryString);
     this.query = this.query.find(JSON.parse(queryString));

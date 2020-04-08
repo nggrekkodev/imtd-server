@@ -60,10 +60,10 @@ const getCoordinatesFromFrenchGovApi = async (ip, version) => {
     ip['latitude'] = res.data.features[0].geometry.coordinates[1];
     ip['longitude'] = res.data.features[0].geometry.coordinates[0];
 
-    ip['position'] = {
-      type: 'Point',
-      coordinates: [ip.longitude, ip.latitude],
-    };
+    // ip['position'] = {
+    //   type: 'Point',
+    //   coordinates: [ip.longitude, ip.latitude],
+    // };
 
     // Add the valid interest point to array of ip's with coordinates
     ipWithCoordinates.push(ip);
@@ -135,6 +135,8 @@ try {
 for (const property in sheetsJson) {
   sheetsJson[property].forEach((ip) => {
     const typeLowerCase = property.toLowerCase();
+
+    // Add upper case to first character and last character 's'
     const type = typeLowerCase.charAt(0).toUpperCase() + typeLowerCase.slice(0, -1).slice(1);
     // console.log(type);
     ip['type'] = type;
