@@ -3,9 +3,29 @@ const path = require('path');
 const Location = require('../models/Location');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
+const APIFeatures = require('./../utils/APIFeatures');
 
 exports.getLocations = catchAsync(async (req, res, next) => {
   const locations = await Location.find();
+
+  res.status(200).json({
+    status: 'success',
+    count: locations.length,
+    data: locations,
+  });
+});
+
+exports.getLocations2 = catchAsync(async (req, res, next) => {
+  console.log(req.query.sector);
+
+  const sectorValue = req.query.sector.in.split(',');
+  req.query.sector = { in: sectorValue };
+  console.log(req.query.sector);
+
+  const features = new APIFeatures(Location.find(), req.query).filter().sort().limitFields().paginate();
+
+  // const docs = await features.query.explain(); response.body : statistics
+  const locations = await features.query;
 
   res.status(200).json({
     status: 'success',

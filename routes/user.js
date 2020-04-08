@@ -12,23 +12,11 @@ router.route('/login').post(login);
 // Protect all routes after this middleware
 router.use(protect);
 
-// router.route('/update-my-password').patch(authController.updatePassword);
-// router.route('/me').get(userController.getMe, userController.getUser);
-// router.route('/update-me').patch(userController.updateMe);
-// router.route('/delete-me').delete(userController.deleteMe);
-
 // Protect all next routes, only admin can access these routes (+ protect middleware)
 router.use(restrictTo('admin'));
 
-router
-  .route('/')
-  .get(getUsers)
-  .post(createUser);
+router.route('/').get(getUsers).post(createUser);
 
-router
-  .route('/:id')
-  .get(getUser)
-  .put(updateUser)
-  .delete(deleteUser);
+router.route('/:id').get(getUser).put(updateUser).delete(deleteUser);
 
 module.exports = router;

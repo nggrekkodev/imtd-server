@@ -104,6 +104,19 @@ const writeFiles = () => {
   }
 };
 
+try {
+  fs.unlinkSync(`${__dirname}/${fileOutput}`);
+  console.log('FILE DELETED');
+} catch (error) {}
+try {
+  fs.unlinkSync(`${__dirname}/dataIncomplete.json`);
+  console.log('FILE DELETED');
+} catch (error) {}
+try {
+  fs.unlinkSync(`${__dirname}/data.json`);
+  console.log('FILE DELETED');
+} catch (error) {}
+
 // READ and CONVERT excel to json
 try {
   workbook = XLSX.readFile(`${__dirname}/${fileName}`, { raw: true }); // excel workbook
@@ -123,8 +136,18 @@ for (const property in sheetsJson) {
   sheetsJson[property].forEach((ip) => {
     const typeLowerCase = property.toLowerCase();
     const type = typeLowerCase.charAt(0).toUpperCase() + typeLowerCase.slice(0, -1).slice(1);
-    console.log(type);
+    // console.log(type);
     ip['type'] = type;
+
+    // console.log(ip.sector);
+    // if (ip.sector.length > 1) {
+    //   ip.sector.forEach((el) => el.trim());
+    // }
+
+    let sectors = ip.sector.split(',');
+    sectors = sectors.map((el) => el.trim());
+    ip.sector = sectors;
+    console.log(ip.sector);
 
     // If ip has no coordinates, push the promise to a promise array
     if (!ip.hasOwnProperty('latitude') || !ip.hasOwnProperty('longitude')) {

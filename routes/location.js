@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-
+const { protect, restrictTo } = require('./../controllers/authentification');
 const {
   getLocations,
+  getLocations2,
   getLocation,
   createLocation,
   updateLocation,
@@ -10,9 +11,9 @@ const {
   uploadLogo,
   uploadImage,
 } = require('./../controllers/location');
-const { protect, restrictTo } = require('./../controllers/authentification');
 
-router.route('/').get(getLocations).post(protect, restrictTo('admin'), createLocation);
+router.route('/').get(getLocations2).post(protect, restrictTo('admin'), createLocation);
+// router.route('/').get(getLocations).post(protect, restrictTo('admin'), createLocation);
 
 router
   .route('/:id')
@@ -22,18 +23,5 @@ router
 
 router.route('/:id/image').put(protect, restrictTo('admin'), uploadImage);
 router.route('/:id/logo').put(protect, restrictTo('admin'), uploadLogo);
-// router
-//   .route('/:id')
-//   .get(tourController.getTour)
-//   .patch(
-//     authController.protect,
-//     authController.restrictTo('admin', 'lead-guide'),
-//     tourController.updateTour
-//   )
-//   .delete(
-//     authController.protect,
-//     authController.restrictTo('admin', 'lead-guide'),
-//     tourController.deleteTour
-//   );
 
 module.exports = router;
