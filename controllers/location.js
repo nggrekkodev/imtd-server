@@ -5,17 +5,19 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const APIFeatures = require('./../utils/APIFeatures');
 
+const earth_distance = 6365.499; // distance from center of earth
+
+// exports.getLocations = catchAsync(async (req, res, next) => {
+//   const locations = await Location.find();
+
+//   res.status(200).json({
+//     status: 'success',
+//     count: locations.length,
+//     data: locations,
+//   });
+// });
+
 exports.getLocations = catchAsync(async (req, res, next) => {
-  const locations = await Location.find();
-
-  res.status(200).json({
-    status: 'success',
-    count: locations.length,
-    data: locations,
-  });
-});
-
-exports.getLocations2 = catchAsync(async (req, res, next) => {
   if (req.query.type) {
     req.query.type = { in: req.query.type.in.split(',') };
     console.log(req.query.type);
@@ -29,6 +31,13 @@ exports.getLocations2 = catchAsync(async (req, res, next) => {
   if (req.query.departmentCode) {
     req.query.departmentCode = { in: req.query.departmentCode.in.split(',') };
     console.log(req.query.sector);
+  } else if (req.query.position) {
+    const params = req.query.position.split(',');
+    const radius = +params[0] / earth_distance || 300;
+    const latitude = params[1];
+    const longitude = params[2];
+    req.query.position = { $geoWithin: { $centerSphere: [[longitude, latitude], radius] } };
+  } else {
   }
 
   const features = new APIFeatures(Location.find(), req.query).filter().sort().limitFields().paginate();

@@ -3,7 +3,7 @@ const router = express.Router();
 const { protect, restrictTo } = require('./../controllers/authentification');
 const {
   getLocations,
-  getLocations2,
+  // getLocations2,
   getLocation,
   createLocation,
   updateLocation,
@@ -12,8 +12,8 @@ const {
   uploadImage,
 } = require('./../controllers/location');
 
-router.route('/').get(getLocations2).post(protect, restrictTo('admin'), createLocation);
-// router.route('/').get(getLocations).post(protect, restrictTo('admin'), createLocation);
+// router.route('/').get(getLocations2).post(protect, restrictTo('admin'), createLocation);
+router.route('/').get(getLocations).post(protect, restrictTo('admin'), createLocation);
 
 router
   .route('/:id')
