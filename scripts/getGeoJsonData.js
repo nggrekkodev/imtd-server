@@ -4,7 +4,7 @@ const XLSX = require('xlsx');
 
 const sheetsJson = {}; // each property is a sheet
 const fileName = 'data_v2.xlsx';
-const fileOutput = 'data_v2_results.xlsx';
+const fileOutput = 'results.xlsx';
 let workbook;
 
 const frenchGovApi = 'https://api-adresse.data.gouv.fr/search/';
@@ -20,16 +20,16 @@ const longitudeMin = 1.378651;
 const getQuery = (ip, version) => {
   let query = `${ip.street} ${ip.city} ${ip.postCode}`;
 
-  if (version === 1) {
-    if (ip.type === 'Entreprise') {
-      query = `${ip.street} ${ip.city} ${ip.postCode}`;
-    } else if (ip.type === 'Laboratoire') {
-      query = `${ip.street} ${ip.city} ${ip.name}`;
-    } else if (ip.type === 'Formation') {
-      query = `${ip.street} ${ip.city} ${ip.name}`;
-    }
-  } else if (version === 2) {
-  }
+  // if (version === 1) {
+  //   if (ip.type === 'Entreprise') {
+  //     query = `${ip.street} ${ip.city} ${ip.postCode}`;
+  //   } else if (ip.type === 'Laboratoire') {
+  //     query = `${ip.street} ${ip.city} ${ip.name}`;
+  //   } else if (ip.type === 'Formation') {
+  //     query = `${ip.street} ${ip.city} ${ip.name}`;
+  //   }
+  // } else if (version === 2) {
+  // }
 
   return query;
 };
@@ -146,6 +146,7 @@ for (const property in sheetsJson) {
     //   ip.sector.forEach((el) => el.trim());
     // }
 
+    console.log(ip);
     let sectors = ip.sector.split(',');
     sectors = sectors.map((el) => el.trim());
     ip.sector = sectors;
