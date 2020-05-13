@@ -6,6 +6,7 @@ const fileupload = require('express-fileupload');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 
 const morgan = require('morgan');
 const chalk = require('chalk');
@@ -33,6 +34,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Set Security HTTP Headers
 app.use(helmet());
 
+// CORS
+app.use(cors());
+
 console.log(chalk.blue(`Environment mode : ${process.env.NODE_ENV}`));
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -49,7 +53,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // Read data from body into req.body. Limit size of body to 10 kb
-app.use(express.json({ limit: '10kb' }));
+app.use(express.json({ limit: '1000kb' }));
 
 // Data sanitization against NOSQL query injection
 app.use(mongoSanitize());

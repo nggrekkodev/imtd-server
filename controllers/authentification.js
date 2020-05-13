@@ -9,9 +9,9 @@ const AppError = require('./../utils/appError');
 // const sendEmail = require('./../utils/email');
 
 // Return token signed with ID
-const signToken = id => {
+const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN
+    expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
@@ -21,7 +21,7 @@ const createSendToken = (user, statusCode, res) => {
   const cookieOptions = {
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
     // secure: true, // cookie only sent on secure connection : https
-    httpOnly: true
+    httpOnly: true,
   };
 
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
@@ -29,15 +29,15 @@ const createSendToken = (user, statusCode, res) => {
   // to send a cookie, attach it to the response object, jwt is the name of the cookie
   res.cookie('jwt', token, cookieOptions);
 
-  // remove password from output
-  user.password = undefined;
+  // remove password, _id and __v from output
+  userOutput = { id: user.id, email: user.email, role: user.role, username: user.username };
 
   res.status(statusCode).json({
     status: 'success',
     token,
     data: {
-      user: user
-    }
+      user: userOutput,
+    },
   });
 };
 
@@ -49,13 +49,14 @@ exports.signup = catchAsync(async (req, res, next) => {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm
+    passwordConfirm: req.body.passwordConfirm,
   });
 
   createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   const { email, password } = req.body;
 
   // 1) Check if email and password exist

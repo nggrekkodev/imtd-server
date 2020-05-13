@@ -40,6 +40,19 @@ exports.getLocations = catchAsync(async (req, res, next) => {
   } else {
   }
 
+  if (req.query.keyword) {
+    const key = req.query.keyword;
+    console.log(key);
+    req.query.keyword = undefined;
+
+    // const string = '';
+    // const re = new RegExp(`/^${key}/i`);
+    // const re = new RegExp(key, 'i').stream();
+    // console.log(re);
+    req.query.name = { $regex: key, $options: '$i' };
+    // req.query = { $text: { $search: key } };
+  }
+
   const features = new APIFeatures(Location.find(), req.query).filter().sort().limitFields().paginate();
 
   // const docs = await features.query.explain(); response.body : statistics

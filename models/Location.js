@@ -140,6 +140,7 @@ const locationSchema = new mongoose.Schema({
 });
 
 locationSchema.index({ position: '2dsphere' });
+// locationSchema.index({ name: 'text' /*, type: 'text', description: 'text' */ });
 
 locationSchema.pre('save', function (next) {
   // Add position field (geojson)
