@@ -43,7 +43,7 @@ exports.getLocations = catchAsync(async (req, res, next) => {
   if (req.query.keyword) {
     const keyword = req.query.keyword;
     delete req.query.keyword;
-    console.log(keyword);
+    console.log('-> keyword : ', keyword);
     req.query.keywords = { $regex: keyword, $options: '$i' };
 
     // const string = '';
@@ -125,6 +125,7 @@ exports.deleteLocation = catchAsync(async (req, res, next) => {
   res.status(204).json({
     status: 'success',
     data: null,
+    // data: { message: 'deleted' },
   });
 });
 
