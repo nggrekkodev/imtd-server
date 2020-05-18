@@ -3,7 +3,7 @@ const axios = require('axios');
 const XLSX = require('xlsx');
 
 const sheetsJson = {}; // each property is a sheet
-const fileName = 'results.xlsx';
+const fileName = 'data_v2.xlsx';
 const fileOutput = 'results.xlsx';
 let workbook;
 
@@ -141,6 +141,10 @@ for (const property in sheetsJson) {
       ip['latitude'] = +ip['latitude'];
       ipWithCoordinates.push(ip);
     }
+
+    // Chain multiple fields into keywords field
+    const keywords = `${ip.name} ${ip.description} ${ip.keywords}`;
+    ip.keywords = keywords;
 
     const jsonIP = { ...ip };
     const sectors = jsonIP.sector.split(',');

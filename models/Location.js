@@ -91,6 +91,9 @@ const locationSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  keywords: {
+    type: String,
+  },
   image: {
     type: String,
     default: 'image_default.png',
@@ -140,6 +143,8 @@ const locationSchema = new mongoose.Schema({
 });
 
 locationSchema.index({ position: '2dsphere' });
+locationSchema.index({ name: 1 });
+locationSchema.index({ description: 1 });
 // locationSchema.index({ name: 'text' /*, type: 'text', description: 'text' */ });
 
 locationSchema.pre('save', function (next) {
