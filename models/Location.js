@@ -27,7 +27,7 @@ const departments = [
 
 // Schema of a Location
 const locationSchema = new mongoose.Schema({
-  sector: {
+  sectors: {
     type: [String],
     // required: [true, `Une localisation doit avoir au minimum un secteur d'activité valide : ${sectors}`],
     validate: {
