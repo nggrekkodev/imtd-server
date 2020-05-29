@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const sectors = ['Aéronautique', 'Automobile', 'Ferroviaire', 'Mobilité Douce'];
 const types = ['Entreprise', 'Laboratoire', 'Formation', 'Association et Institution'];
+const formationTypes = ['Initiale', 'Continue', 'Alternance', 'Apprentissage', 'VAE', 'Autre'];
+const formationLevels = ['CAP', 'BTS', 'Bac', 'Bac Pro', 'Licence', 'Master', 'Ingénieur'];
 
 const departments = [
   { name: 'Aisne', code: 02 },
@@ -24,7 +26,6 @@ const locationSchema = new mongoose.Schema({
 
   sectors: {
     type: [String],
-    // required: [true, `Une localisation doit avoir au minimum un secteur d'activité valide : ${sectors}`],
     validate: {
       message: `Secteurs d'activité non valides`,
       validator: function (elements) {
@@ -124,24 +125,57 @@ const locationSchema = new mongoose.Schema({
     default: 'logo_default.png',
   },
 
-  formationLevel: {
-    type: String,
+  formationLevels: {
+    type: [String],
+    validate: {
+      message: `Niveaux de formation non valides`,
+      validator: function (elements) {
+        if (elements.length === 0) return false;
+
+        for (element of elements) {
+          // If sectors does not include the sector
+          if (!formationLevels.includes(element)) {
+            return false;
+          }
+        }
+        return true;
+      },
+    },
   },
-  initiale: {
-    type: Boolean,
+
+  formationTypes: {
+    type: [String],
+    validate: {
+      message: `Types de formation non valides`,
+      validator: function (elements) {
+        if (elements.length === 0) return false;
+
+        for (element of elements) {
+          // If sectors does not include the sector
+          if (!formationTypes.includes(element)) {
+            return false;
+          }
+        }
+        return true;
+      },
+    },
   },
-  continue: {
-    type: Boolean,
-  },
-  alternance: {
-    type: Boolean,
-  },
-  apprentissage: {
-    type: Boolean,
-  },
-  vae: {
-    type: Boolean,
-  },
+
+  // initiale: {
+  //   type: Boolean,
+  // },
+  // continue: {
+  //   type: Boolean,
+  // },
+  // alternance: {
+  //   type: Boolean,
+  // },
+  // apprentissage: {
+  //   type: Boolean,
+  // },
+  // vae: {
+  //   type: Boolean,
+  // },
   createdAt: {
     type: Date,
     default: Date.now(),
