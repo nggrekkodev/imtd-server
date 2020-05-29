@@ -2,27 +2,13 @@ const mongoose = require('mongoose');
 
 const sectors = ['Aéronautique', 'Automobile', 'Ferroviaire', 'Mobilité Douce'];
 const types = ['Entreprise', 'Laboratoire', 'Formation', 'Association et Institution'];
+
 const departments = [
-  {
-    name: 'Aisne',
-    code: 02,
-  },
-  {
-    name: 'Nord',
-    code: 59,
-  },
-  {
-    name: 'Oise',
-    code: 60,
-  },
-  {
-    name: 'Pas-de-Calais',
-    code: 62,
-  },
-  {
-    name: 'Somme',
-    code: 80,
-  },
+  { name: 'Aisne', code: 02 },
+  { name: 'Nord', code: 59 },
+  { name: 'Oise', code: 60 },
+  { name: 'Pas-de-Calais', code: 62 },
+  { name: 'Somme', code: 80 },
 ];
 
 // Schema of a Location
@@ -62,10 +48,12 @@ const locationSchema = new mongoose.Schema({
 
   shortName: {
     type: String,
+    default: '',
   },
 
   labCode: {
     type: String,
+    default: '',
   },
 
   street: {
@@ -75,6 +63,7 @@ const locationSchema = new mongoose.Schema({
 
   location: {
     type: String,
+    default: '',
   },
 
   postCode: {
@@ -97,22 +86,32 @@ const locationSchema = new mongoose.Schema({
 
   phone: {
     type: String,
+    default: '',
   },
 
   website: {
     type: String,
+    default: '',
   },
 
   numbers: {
     type: Number,
+    default: 0,
   },
 
   description: {
     type: String,
+    default: '',
   },
 
   keywords: {
     type: String,
+    default: '',
+  },
+
+  keywordsRegex: {
+    type: String,
+    select: false,
   },
 
   // image: {
@@ -187,7 +186,7 @@ locationSchema.pre('save', function (next) {
   };
 
   // Create keywords fields
-  this.keywords = `${this.name} ${this.keywords} ${this.description}`;
+  this.keywordsRegex = `${this.name} ${this.keywords} ${this.description}`;
 
   // Add department name and code
   this.departmentCode = +this.postCode.slice(0, 2);

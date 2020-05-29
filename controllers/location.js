@@ -44,7 +44,7 @@ exports.getLocations = catchAsync(async (req, res, next) => {
     const keyword = req.query.keyword;
     delete req.query.keyword;
     console.log('-> keyword : ', keyword);
-    req.query.keywords = { $regex: keyword, $options: '$i' };
+    req.query.keywordsRegex = { $regex: keyword, $options: '$i' };
 
     // const string = '';
     // const re = new RegExp(`/^${key}/i`);
@@ -168,7 +168,7 @@ exports.uploadLogo = catchAsync(async (req, res, next) => {
     // insert filename into DB
     const location = await Location.findByIdAndUpdate(
       req.params.id,
-      { image: file.name },
+      { logo: file.name },
       {
         new: true,
       }
