@@ -1,1 +1,0 @@
-Aéronautique;Automobile;Ferroviaire;Aéronautique, Automobile;Aéronautique, Ferroviaire;Automobile, Ferroviaire;Aéronautique, Automobile, Ferroviaire

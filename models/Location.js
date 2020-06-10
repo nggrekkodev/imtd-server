@@ -6,11 +6,11 @@ const formationTypes = ['Initiale', 'Continue', 'Alternance', 'Apprentissage', '
 const formationLevels = ['CAP', 'BTS', 'Bac', 'Bac Pro', 'Licence', 'Master', 'Ingénieur'];
 
 const departments = [
-  { name: 'Aisne', code: 02 },
-  { name: 'Nord', code: 59 },
-  { name: 'Oise', code: 60 },
-  { name: 'Pas-de-Calais', code: 62 },
-  { name: 'Somme', code: 80 },
+  { name: 'Aisne', code: '02' },
+  { name: 'Nord', code: '59' },
+  { name: 'Oise', code: '60' },
+  { name: 'Pas-de-Calais', code: '62' },
+  { name: 'Somme', code: '80' },
 ];
 
 // Schema of a Location
@@ -78,7 +78,7 @@ const locationSchema = new mongoose.Schema({
   },
 
   departmentCode: {
-    type: Number,
+    type: String,
   },
 
   departmentName: {
@@ -219,20 +219,20 @@ locationSchema.pre('save', function (next) {
     coordinates: [this.longitude, this.latitude],
   };
 
-  // Create keywords fields
+  // Create keywordsRegex field
   this.keywordsRegex = `${this.name} ${this.keywords} ${this.description}`;
 
   // Add department name and code
-  this.departmentCode = +this.postCode.slice(0, 2);
+  this.departmentCode = this.postCode.slice(0, 2);
   console.log(this.departmentCode);
   department = departments.find((dep) => dep.code === this.departmentCode);
   if (department) {
     this.departmentName = department.name;
   } else {
-    this.departmentName = 'error';
+    this.departmentName = 'Département non indexé !';
   }
 
-  console.log('keywords', this.keywords);
+  // console.log('keywords', this.keywords);
 
   next();
 });
