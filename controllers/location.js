@@ -23,9 +23,14 @@ exports.getLocations = catchAsync(async (req, res, next) => {
     console.log(req.query.type);
   }
 
-  if (req.query.sector) {
-    req.query.sector = { in: req.query.sector.in.split(',') };
-    console.log(req.query.sector);
+  if (req.query.sectors) {
+    req.query.sectors = { in: req.query.sectors.in.split(',') };
+    console.log(req.query.sectors);
+  }
+
+  if (req.query.departmentName) {
+    req.query.departmentName = { in: req.query.departmentName.in.split(',') };
+    console.log(req.query.departmentName);
   }
 
   if (req.query.departmentCode) {
