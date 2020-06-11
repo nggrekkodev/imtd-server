@@ -8,40 +8,27 @@ const fileName = 'results.xlsx';
 const fileOutput = 'results.xlsx';
 let workbook;
 
-const apiFR = 'https://api-adresse.data.gouv.fr/search/';
-const requests = [];
-const ipWithCoordinates = [];
-const ipWithoutCoordinates = [];
+const geocoderAPI = 'https://api-adresse.data.gouv.fr/search/';
+const requests = []; // array of promises
+const ipWithCoordinates = []; // valid locations (with coordinates)
+const ipWithoutCoordinates = []; // locations without coordinates
 const latitudeMin = 48.830042;
 const latitudeMax = 51.089338;
 const longitudeMax = 4.25398;
 const longitudeMin = 1.378651;
 
-// Construct the query for the API
+// Construct the query for the geocoderAPI
 const getQuery = (ip, version) => {
-  let query = `${ip.street} ${ip.city} ${ip.postCode}`;
-
-  // if (version === 1) {
-  //   if (ip.type === 'Entreprise') {
-  //     query = `${ip.street} ${ip.city} ${ip.postCode}`;
-  //   } else if (ip.type === 'Laboratoire') {
-  //     query = `${ip.street} ${ip.city} ${ip.name}`;
-  //   } else if (ip.type === 'Formation') {
-  //     query = `${ip.street} ${ip.city} ${ip.name}`;
-  //   }
-  // } else if (version === 2) {
-  // }
-
-  return query;
+  return `${ip.street} ${ip.city} ${ip.postCode}`;
 };
 
 // Get coordinates of a location
-const geocodeFR = async (ip, version, locationType) => {
+const geocode = async (ip, version, locationType) => {
   const querySearch = getQuery(ip, version);
 
   let res;
   try {
-    res = await axios.get(apiFR, {
+    res = await axios.get(geocoderAPI, {
       params: { q: `${querySearch}`, limit: 1 },
     });
     // console.log(res.data);
@@ -73,24 +60,25 @@ const geocodeFR = async (ip, version, locationType) => {
 
 const transformLocations = () => {
   ipWithCoordinates.forEach((location) => {
+    console.log(location.name);
     location.sectors = location.sectors.split(',').map((el) => el.trim());
     if (location.type === 'Formation') {
-      console.log(location);
+      // console.log(location);
 
       if (location.formationLevels === undefined) {
-        console.log('formationLevels : undefined');
+        // console.log('formationLevels : undefined');
         location.formationLevels = '-';
       } else {
-        console.log('formationLevels : ', location.formationLevels);
+        // console.log('formationLevels : ', location.formationLevels);
         location.formationLevels = location.formationLevels.split(',').map((el) => el.trim());
       }
       // console.log(formationLevels);
 
       if (location.formationTypes === undefined) {
-        console.log('formationTypes : undefined');
+        // console.log('formationTypes : undefined');
         location.formationLevels = '-';
       } else {
-        console.log('formationTypes : ', location.formationTypes);
+        // console.log('formationTypes : ', location.formationTypes);
         location.formationTypes = location.formationTypes.split(',').map((el) => el.trim());
       }
     }
@@ -159,7 +147,7 @@ try {
       if (!ip.hasOwnProperty('latitude') || !ip.hasOwnProperty('longitude')) {
         // const ip2 = { ...ip };
         // ip2['type'] = property;
-        requests.push(geocodeFR(ip, 1, property));
+        requests.push(geocode(ip, 1, property));
       }
       // Else, form the coordinates with latitude and longitude from excel data
       else {
@@ -187,38 +175,3 @@ try {
 } catch (err) {
   console.log(err);
 }
-
-// // For each location
-// for (const property in sheetsJson) {
-//   sheetsJson[property].forEach((ip) => {
-//     const typeLowerCase = property.toLowerCase();
-
-//     // Add upper case to first character and last character 's'
-//     const type = typeLowerCase.charAt(0).toUpperCase() + typeLowerCase.slice(0, -1).slice(1);
-//     ip['type'] = type;
-
-//     // If ip has no coordinates, push the promise to a promise array
-//     if (!ip.hasOwnProperty('latitude') || !ip.hasOwnProperty('longitude')) {
-//       requests.push(geocodeFR(ip, 1));
-//     }
-//     // Else, form the coordinates with latitude and longitude from excel data
-//     else {
-//       // parse string to number with + operator
-//       ip['longitude'] = +ip['longitude'];
-//       ip['latitude'] = +ip['latitude'];
-//       ipWithCoordinates.push(ip);
-//     }
-
-//     // Chain multiple fields into keywords field
-//     const keywords = `${ip.name} ${ip.description} ${ip.keywords}`;
-//     ip.keywords = keywords;
-
-//     const jsonIP = { ...ip };
-//     const sectors = jsonIP.sector.split(',');
-//     jsonIP.sector = sectors.map((el) => el.trim());
-//   });
-// }
-
-// axios.all(requests).then(() => {
-//   writeFiles();
-// });

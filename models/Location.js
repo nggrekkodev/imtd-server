@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const sectors = ['Aéronautique', 'Automobile', 'Ferroviaire', 'Mobilité Douce'];
 const types = ['Entreprise', 'Laboratoire', 'Formation', 'Association et Institution'];
-const formationTypes = ['Initiale', 'Continue', 'Alternance', 'Apprentissage', 'VAE', 'Autre'];
-const formationLevels = ['CAP', 'BTS', 'Bac', 'Bac Pro', 'Licence', 'Master', 'Ingénieur'];
+const formationTypes = ['Initiale', 'Continue', 'Alternance', 'Apprentissage', 'VAE', 'Autre', '-'];
+const formationLevels = ['CAP', 'BTS', 'Bac', 'Bac Pro', 'Licence', 'Master', 'Ingénieur', 'Autre', '-'];
 
 const departments = [
   { name: 'Aisne', code: '02' },
@@ -115,11 +115,6 @@ const locationSchema = new mongoose.Schema({
     select: false,
   },
 
-  // image: {
-  //   type: String,
-  //   default: 'image_default.png',
-  // },
-
   logo: {
     type: String,
     default: 'logo_default.png',
@@ -161,21 +156,6 @@ const locationSchema = new mongoose.Schema({
     },
   },
 
-  // initiale: {
-  //   type: Boolean,
-  // },
-  // continue: {
-  //   type: Boolean,
-  // },
-  // alternance: {
-  //   type: Boolean,
-  // },
-  // apprentissage: {
-  //   type: Boolean,
-  // },
-  // vae: {
-  //   type: Boolean,
-  // },
   createdAt: {
     type: Date,
     default: Date.now(),
