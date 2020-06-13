@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const sectors = ['Aéronautique', 'Automobile', 'Ferroviaire', 'Mobilité Douce'];
-const types = ['Entreprise', 'Laboratoire', 'Formation', 'Association et Institution'];
+const TYPE_FORMATION = 'Formation';
+const types = ['Entreprise', 'Laboratoire', TYPE_FORMATION, 'Association et Institution'];
 const formationTypes = ['Initiale', 'Continue', 'Alternance', 'Apprentissage', 'VAE', 'Autre', '-'];
 const formationLevels = ['CAP', 'BTS', 'Bac', 'Bac Pro', 'Licence', 'Master', 'Ingénieur', 'Autre', '-'];
 
@@ -125,6 +126,7 @@ const locationSchema = new mongoose.Schema({
     validate: {
       message: `Niveaux de formation non valides`,
       validator: function (elements) {
+        if (this.type !== TYPE_FORMATION) return true;
         if (elements.length === 0) return false;
 
         for (element of elements) {
@@ -143,6 +145,7 @@ const locationSchema = new mongoose.Schema({
     validate: {
       message: `Types de formation non valides`,
       validator: function (elements) {
+        if (this.type !== TYPE_FORMATION) return true;
         if (elements.length === 0) return false;
 
         for (element of elements) {

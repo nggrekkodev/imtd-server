@@ -95,7 +95,7 @@ app.use('/api/v1/users', userRouter);
 
 // 404 Route
 app.all('*', (req, res, next) => {
-  next(new AppError(`Erreur 404 Page not found`, 404));
+  next(new AppError(`Erreur 404 Page introuvable`, 404));
 });
 
 /**
