@@ -82,7 +82,7 @@ exports.getLocations = catchAsync(async (req, res, next) => {
 });
 
 exports.getLocation = catchAsync(async (req, res, next) => {
-  console.log(req.params.id);
+  // console.log(req.params.id);
   const location = await Location.findById(req.params.id);
 
   if (!location) {
@@ -106,13 +106,13 @@ exports.createLocation = catchAsync(async (req, res, next) => {
 });
 
 exports.updateLocation = catchAsync(async (req, res, next) => {
-  console.log('before ', req.body);
+  // console.log('before ', req.body);
   const location = await Location.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
 
-  console.log('after', location);
+  // console.log('after', location);
 
   if (!location) {
     return next(new AppError(`Aucune Localisation trouvée avec l'identifiant : ${req.params.id}`, 404));
