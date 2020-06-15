@@ -123,10 +123,20 @@ const locationSchema = new mongoose.Schema({
 
   formationLevels: {
     type: [String],
+    required: function () {
+      console.log(this.type === TYPE_FORMATION);
+      return this.type === TYPE_FORMATION;
+    },
     validate: {
       message: `Niveaux de formation non valides`,
       validator: function (elements) {
-        if (this.type !== TYPE_FORMATION) return true;
+        if (this.type !== TYPE_FORMATION) {
+          console.log('formationLevels skip');
+          return true;
+        }
+
+        console.log(elements);
+
         if (elements.length === 0) return false;
 
         for (element of elements) {
@@ -142,10 +152,19 @@ const locationSchema = new mongoose.Schema({
 
   formationTypes: {
     type: [String],
+    required: function () {
+      console.log(this.type === TYPE_FORMATION);
+      return this.type === TYPE_FORMATION;
+    },
     validate: {
       message: `Types de formation non valides`,
       validator: function (elements) {
-        if (this.type !== TYPE_FORMATION) return true;
+        console.log(elements);
+
+        if (this.type !== TYPE_FORMATION) {
+          console.log('formationTypes skip');
+          return true;
+        }
         if (elements.length === 0) return false;
 
         for (element of elements) {
