@@ -1,10 +1,59 @@
 const mongoose = require('mongoose');
 
-const sectors = ['Aéronautique', 'Automobile', 'Ferroviaire', 'Mobilité Douce'];
+// TYPES
+const TYPE_ENTREPRISE = 'Entreprise';
+const TYPE_LABORATOIRE = 'Laboratoire';
 const TYPE_FORMATION = 'Formation';
-const types = ['Entreprise', 'Laboratoire', TYPE_FORMATION, 'Association et Institution'];
-const formationTypes = ['Initiale', 'Continue', 'Alternance', 'Apprentissage', 'VAE', 'Autre', '-'];
-const formationLevels = ['CAP', 'BTS', 'Bac', 'Bac Pro', 'Licence', 'Master', 'Ingénieur', 'Autre', '-'];
+const TYPE_ASSOCIATION_INSTITUTION = 'Association et Institution';
+const types = [TYPE_ENTREPRISE, TYPE_LABORATOIRE, TYPE_FORMATION, TYPE_ASSOCIATION_INSTITUTION];
+
+// SECTORS
+const SECTOR_AERONAUTIQUE = 'Aéronautique';
+const SECTOR_AUTOMOBILE = 'Automobile';
+const SECTOR_FERROVIAIRE = 'Ferroviaire';
+const SECTOR_MOBILITE_DOUCE = 'Mobilité Douce';
+const sectors = [SECTOR_AERONAUTIQUE, SECTOR_AUTOMOBILE, SECTOR_FERROVIAIRE, SECTOR_MOBILITE_DOUCE];
+// const sectors = ['Aéronautique', 'Automobile', 'Ferroviaire', 'Mobilité Douce'];
+
+// FORMATION TYPES
+const FORMATION_TYPES_INITIALE = 'Initiale';
+const FORMATION_TYPES_CONTINUE = 'Continue';
+const FORMATION_TYPES_ALTERNANCE = 'Alternance';
+const FORMATION_TYPES_APPRENTISSAGE = 'Apprentissage';
+const FORMATION_TYPES_VAE = 'VAE';
+const FORMATION_TYPES_AUTRE = 'Autre';
+const FORMATION_TYPES_NON_DEFINI = 'Non Défini';
+const formationTypes = [
+  FORMATION_TYPES_INITIALE,
+  FORMATION_TYPES_CONTINUE,
+  FORMATION_TYPES_ALTERNANCE,
+  FORMATION_TYPES_APPRENTISSAGE,
+  FORMATION_TYPES_VAE,
+  FORMATION_TYPES_AUTRE,
+  FORMATION_TYPES_NON_DEFINI,
+];
+
+// FORMATION LEVELS
+const FORMATION_LEVELS_CAP = 'CAP';
+const FORMATION_LEVELS_BTS = 'BTS';
+const FORMATION_LEVELS_BAC = 'Bac';
+const FORMATION_LEVELS_BAC_PRO = 'Bac Pro';
+const FORMATION_LEVELS_LICENCE = 'Licence';
+const FORMATION_LEVELS_MASTER = 'Master';
+const FORMATION_LEVELS_INGENIEUR = 'Ingénieur';
+const FORMATION_LEVELS_AUTRE = 'Autre';
+const FORMATION_LEVELS_NON_DEFINI = 'Non Défini';
+const formationLevels = [
+  FORMATION_LEVELS_CAP,
+  FORMATION_LEVELS_BTS,
+  FORMATION_LEVELS_BAC,
+  FORMATION_LEVELS_BAC_PRO,
+  FORMATION_LEVELS_LICENCE,
+  FORMATION_LEVELS_MASTER,
+  FORMATION_LEVELS_INGENIEUR,
+  FORMATION_LEVELS_AUTRE,
+  FORMATION_LEVELS_NON_DEFINI,
+];
 
 const departments = [
   { name: 'Aisne', code: '02' },
