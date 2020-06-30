@@ -4,6 +4,7 @@ const Location = require('../models/Location');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const APIFeatures = require('./../utils/APIFeatures');
+const { listenerCount } = require('../app');
 
 const earth_distance = 6365.499; // distance from center of earth
 
@@ -135,6 +136,27 @@ exports.deleteLocation = catchAsync(async (req, res, next) => {
     status: 'success',
     data: null,
     // data: { message: 'deleted' },
+  });
+});
+
+exports.getStats = catchAsync(async (req, res, next) => {
+  let data = await Location.aggregate([
+    {
+      $group: {
+        _id: '$type',
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  data.forEach((el) => {
+    el.type = el._id;
+    delete el._id;
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: data,
   });
 });
 

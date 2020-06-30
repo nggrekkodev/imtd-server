@@ -10,10 +10,12 @@ const {
   deleteLocation,
   uploadLogo,
   uploadImage,
+  getStats,
 } = require('./../controllers/location');
 
 // router.route('/').get(getLocations2).post(protect, restrictTo('admin'), createLocation);
 router.route('/').get(getLocations).post(protect, restrictTo('admin'), createLocation);
+router.route('/stats').get(getStats);
 
 router
   .route('/:id')
