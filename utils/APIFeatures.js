@@ -52,7 +52,7 @@ class APIFeatures {
 
   paginate() {
     const page = this.queryString.page * 1 || 1; // convert string to number, page 1 by default
-    const limit = this.queryString.limit * 1 || 100;
+    const limit = this.queryString.limit * 1 || 1000;
     const skip = (page - 1) * limit;
 
     this.query = this.query.skip(skip).limit(limit);
