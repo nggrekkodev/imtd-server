@@ -3,17 +3,17 @@ const router = express.Router();
 const { protect, restrictTo } = require('./../controllers/authentification');
 const {
   getLocations,
-  // getLocations2,
   getLocation,
   createLocation,
   updateLocation,
   deleteLocation,
   uploadLogo,
-  uploadImage,
   getStats,
 } = require('./../controllers/location');
 
-// router.route('/').get(getLocations2).post(protect, restrictTo('admin'), createLocation);
+// TO REMOVE ON PROD
+router.route('/:id/logo').put(uploadLogo);
+
 router.route('/').get(getLocations).post(protect, restrictTo('admin'), createLocation);
 router.route('/stats').get(getStats);
 
@@ -23,7 +23,8 @@ router
   .put(protect, restrictTo('admin'), updateLocation)
   .delete(protect, restrictTo('admin'), deleteLocation);
 
-router.route('/:id/image').put(protect, restrictTo('admin'), uploadImage);
-router.route('/:id/logo').put(protect, restrictTo('admin'), uploadLogo);
+// router.route('/:id/logo').put(protect, restrictTo('admin'), uploadLogo);
+
+// router.route('/:id/image').put(protect, restrictTo('admin'), uploadImage);
 
 module.exports = router;

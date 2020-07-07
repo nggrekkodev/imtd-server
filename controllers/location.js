@@ -161,8 +161,8 @@ exports.getStats = catchAsync(async (req, res, next) => {
 });
 
 exports.uploadLogo = catchAsync(async (req, res, next) => {
-  console.log(req.params.id);
-  console.log(req.files);
+  console.log('req.params.id', req.params.id);
+  // console.log('req.files', req.files);
   const location = await Location.findById(req.params.id);
 
   if (!location) {
@@ -174,10 +174,10 @@ exports.uploadLogo = catchAsync(async (req, res, next) => {
   }
 
   const file = req.files.logo;
-  console.log(file);
+  // console.log('logo', file);
 
   // make sure the file is an image
-  if (!file.mimetype.startsWith('image')) {
+  if (!file.mimetype.startsWith('image') && file.mimetype !== 'application/octet-stream') {
     return next(new AppError(`File format not valid`, 400));
   }
 
@@ -187,7 +187,11 @@ exports.uploadLogo = catchAsync(async (req, res, next) => {
   }
 
   // Create custom filename
-  file.name = `logo_${location._id}${path.parse(file.name).ext}`;
+  if (file.mimetype === 'application/octet-stream') {
+    file.name = `logo_${location._id}.png`;
+  } else {
+    file.name = `logo_${location._id}${path.parse(file.name).ext}`;
+  }
 
   file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
     if (err) {
@@ -210,50 +214,50 @@ exports.uploadLogo = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.uploadImage = catchAsync(async (req, res, next) => {
-  const location = await Location.findById(req.params.id);
+// exports.uploadImage = catchAsync(async (req, res, next) => {
+//   const location = await Location.findById(req.params.id);
 
-  if (!location) {
-    return next(new AppError(`Aucune Localisation trouvée avec l'identifiant : ${req.params.id}`, 404));
-  }
+//   if (!location) {
+//     return next(new AppError(`Aucune Localisation trouvée avec l'identifiant : ${req.params.id}`, 404));
+//   }
 
-  if (!req.files) {
-    return next(new AppError(`Aucun fichier à uploader`, 400));
-  }
+//   if (!req.files) {
+//     return next(new AppError(`Aucun fichier à uploader`, 400));
+//   }
 
-  const file = req.files.image;
-  console.log(file);
+//   const file = req.files.image;
+//   console.log(file);
 
-  // make sure the file is an image
-  if (!file.mimetype.startsWith('image')) {
-    return next(new AppError(`File format not valid`, 400));
-  }
+//   // make sure the file is an image
+//   if (!file.mimetype.startsWith('image')) {
+//     return next(new AppError(`File format not valid`, 400));
+//   }
 
-  // check file size
-  if (file.size > process.env.MAX_FILE_UPLOAD) {
-    return next(new AppError(`File too big : > 1Mb`, 400));
-  }
+//   // check file size
+//   if (file.size > process.env.MAX_FILE_UPLOAD) {
+//     return next(new AppError(`File too big : > 1Mb`, 400));
+//   }
 
-  // Create custom filename
-  file.name = `image_${location._id}${path.parse(file.name).ext}`;
+//   // Create custom filename
+//   file.name = `image_${location._id}${path.parse(file.name).ext}`;
 
-  file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
-    if (err) {
-      console.error(err);
-      return next(new AppError(`Problem with file upload`, 500));
-    }
+//   file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
+//     if (err) {
+//       console.error(err);
+//       return next(new AppError(`Problem with file upload`, 500));
+//     }
 
-    // insert filename into DB
-    const location = await Location.findByIdAndUpdate(
-      req.params.id,
-      { image: file.name },
-      {
-        new: true,
-      }
-    );
-    res.status(200).json({
-      status: 'success',
-      data: location,
-    });
-  });
-});
+//     // insert filename into DB
+//     const location = await Location.findByIdAndUpdate(
+//       req.params.id,
+//       { image: file.name },
+//       {
+//         new: true,
+//       }
+//     );
+//     res.status(200).json({
+//       status: 'success',
+//       data: location,
+//     });
+//   });
+// });

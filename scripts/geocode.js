@@ -4,8 +4,8 @@ const XLSX = require('xlsx');
 
 const sheetsJson = {}; // each property is a sheet
 // const fileName = 'data_v5_cut.xlsx';
-const fileName = 'results.xlsx';
-const fileOutput = 'results.xlsx';
+const fileName = 'data.xlsx';
+const fileOutput = 'data.xlsx';
 let workbook;
 
 const geocoderAPI = 'https://api-adresse.data.gouv.fr/search/';
@@ -138,7 +138,7 @@ try {
 
   // For each excel sheet
   for (const property in sheetsJson) {
-    console.log('*****************************************', property);
+    console.log('*****', property);
     // For each record of a sheet
     sheetsJson[property].forEach((ip) => {
       // console.log(ip);
