@@ -11,9 +11,7 @@ const {
   getStats,
 } = require('./../controllers/location');
 
-// TO REMOVE ON PROD
-router.route('/:id/logo').put(uploadLogo);
-
+// Routes
 router.route('/').get(getLocations).post(protect, restrictTo('admin'), createLocation);
 router.route('/stats').get(getStats);
 
@@ -22,6 +20,15 @@ router
   .get(getLocation)
   .put(protect, restrictTo('admin'), updateLocation)
   .delete(protect, restrictTo('admin'), deleteLocation);
+
+// dev routes
+if (process.env.NODE_ENV.trim() === 'development') {
+  router.route('/:id/logo').put(uploadLogo);
+}
+// prod routes
+else {
+  router.route('/:id/logo').put(protect, restrictTo('admin'), uploadLogo);
+}
 
 // router.route('/:id/logo').put(protect, restrictTo('admin'), uploadLogo);
 
