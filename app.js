@@ -14,6 +14,7 @@ const chalk = require('chalk');
 // Import routers
 const locationRouter = require('./routes/location');
 const userRouter = require('./routes/user');
+const mailerRouter = require('./routes/mailer');
 
 // Import Custom Error and global error handler
 const AppError = require('./utils/AppError');
@@ -90,6 +91,7 @@ app.use(xss());
 // Route middlewares
 app.use('/api/v1/locations', locationRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/mailer', mailerRouter);
 // app.use('/api/v1/tours', tourRouter);
 // app.use('/api/v1/reviews', reviewRouter);
 
