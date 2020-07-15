@@ -43,9 +43,9 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Rate Limiter : Allow 100 requests from the same IP in 1 hour
+// Rate Limiter : Limit each IP to 1000 requests per windowMs
 const limiter = rateLimit({
-  max: 1000,
+  max: 10000,
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour !',
 });
@@ -53,7 +53,7 @@ const limiter = rateLimit({
 // affect the limiter to all routes starting with '/api'
 app.use('/api', limiter);
 
-// Read data from body into req.body. Limit size of body to 10 kb
+// Read data from body into req.body. Limit size of body to 1000 kb
 app.use(express.json({ limit: '1000kb' }));
 
 // Data sanitization against NOSQL query injection
@@ -65,35 +65,14 @@ app.use(xss());
 // Prevent parameter pollution
 // app.use(
 //   hpp({
-//     whitelist: ['duration', 'ratingsQuantity', 'ratingsAverage', 'maxGroupSize', 'difficulty', 'price']
+//     whitelist: ['name', 'type[in]', 'sectors[in]', 'departmentCode[in]', 'position', 'departmentName[in]','keyword']
 //   })
 // );
-
-// app.get('/', (req, res) => {
-//   res.status(200).render('base', {
-//     tour: 'The forest Hiker',
-//     user: 'Nick'
-//   });
-// });
-
-// app.get('/overview', (req, res) => {
-//   res.status(200).render('overview', {
-//     title: 'All tours'
-//   });
-// });
-
-// app.get('/tour', (req, res) => {
-//   res.status(200).render('tour', {
-//     title: 'The Forest Hiker Tour'
-//   });
-// });
 
 // Route middlewares
 app.use('/api/v1/locations', locationRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/mailer', mailerRouter);
-// app.use('/api/v1/tours', tourRouter);
-// app.use('/api/v1/reviews', reviewRouter);
 
 // 404 Route
 app.all('*', (req, res, next) => {
