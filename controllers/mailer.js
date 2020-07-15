@@ -5,13 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 
 exports.sendMail = catchAsync(async (req, res, next) => {
-  console.log(req.body);
-  /**
-   * - title
-   * - content
-   * - email
-   * - phone
-   */
+  // console.log(req.body);
 
   // If fields are not valid
   if (!req.body.title || !req.body.content || !req.body.email || !req.body.phone) {
@@ -35,13 +29,13 @@ exports.sendMail = catchAsync(async (req, res, next) => {
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.log(error);
+      // console.log(error);
       return next(new AppError(`Erreur durant l'envoi de l'email`, 404));
     } else {
-      console.log('Email sent: ' + info.response);
+      // console.log('Email sent: ' + info.response);
       res.status(200).json({
         status: 'success',
-        data: 'Success',
+        data: null,
       });
     }
   });

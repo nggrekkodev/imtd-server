@@ -46,6 +46,16 @@ exports.getLocations = catchAsync(async (req, res, next) => {
   } else {
   }
 
+  if (req.query.formationTypes) {
+    req.query.formationTypes = { in: req.query.formationTypes.in.split(',') };
+    console.log(req.query.formationTypes);
+  }
+
+  if (req.query.formationLevels) {
+    req.query.formationLevels = { in: req.query.formationLevels.in.split(',') };
+    console.log(req.query.formationLevels);
+  }
+
   if (req.query.keyword) {
     const keyword = req.query.keyword;
     delete req.query.keyword;

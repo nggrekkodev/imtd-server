@@ -4,7 +4,7 @@ const router = express.Router();
 const { getUsers, getUser, createUser, updateUser, deleteUser } = require('./../controllers/user');
 const { signup, login, protect, restrictTo } = require('./../controllers/authentification');
 
-router.route('/signup').post(signup);
+// router.route('/signup').post(signup);
 router.route('/login').post(login);
 // router.route('/forgot-password').post(authController.forgotPassword);
 // router.route('/reset-password/:token').patch(authController.resetPassword);
