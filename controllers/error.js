@@ -1,6 +1,6 @@
 const AppError = require('../utils/AppError');
 
-const handleCastErrorDB = err => {
+const handleCastErrorDB = (err) => {
   // path : name of the field
   // value : field value
   const message = `Invalid ${err.path} : ${err.value}`;
@@ -19,7 +19,7 @@ const handleCastErrorDB = err => {
         "status": "error"
     }
 }*/
-const handleDuplicateFieldsDB = err => {
+const handleDuplicateFieldsDB = (err) => {
   // extract the name \"The Forest Hiker\"
   const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
   // console.log(value);
@@ -27,25 +27,25 @@ const handleDuplicateFieldsDB = err => {
   return new AppError(message, 400);
 };
 
-const handleValidationErrorDB = err => {
-  const errors = Object.values(err.errors).map(element => element.message);
+const handleValidationErrorDB = (err) => {
+  const errors = Object.values(err.errors).map((element) => element.message);
   const message = `Invalid input data ${errors.join('. ')}`;
   return new AppError(message, 400);
 };
 
-const handleJWTExpiredError = err => {
+const handleJWTExpiredError = (err) => {
   const message = `Your token has expired. Please Log in`;
   return new AppError(message, 401);
 };
 
-const handleJWTInvalidError = err => new AppError('Your token is not valid ! Please log in again', 401);
+const handleJWTInvalidError = (err) => new AppError('Your token is not valid ! Please log in again', 401);
 
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
     error: err,
     message: err.message,
-    stack: err.stack
+    stack: err.stack,
   });
 };
 
@@ -54,17 +54,17 @@ const sendErrorProd = (err, res) => {
   if (err.isOperational) {
     res.status(err.statusCode).json({
       status: err.status,
-      message: err.message
+      message: err.message,
     });
   }
   // Programming or other unknown error : don't leak error details
   else {
     // 1) Log error
-    console.error('ERROR 💥', err);
+    // console.error('ERROR 💥', err);
     // 2) Send generic message
     res.status(500).json({
       status: 'error',
-      message: 'Something went very wrong !!! '
+      message: 'Something went very wrong !!! ',
     });
   }
 };

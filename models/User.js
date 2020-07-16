@@ -7,25 +7,25 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: [true, 'Please tell us your name !']
+    required: [true, 'Please tell us your name !'],
   },
   email: {
     type: String,
     required: [true, 'Please provide your email'],
     unique: true,
     lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email']
+    validate: [validator.isEmail, 'Please provide a valid email'],
   },
   role: {
     type: String,
-    enum: ['admin', 'user'],
-    default: 'user'
+    enum: ['admin', 'operator', 'user'],
+    default: 'user',
   },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
     minlength: 8,
-    select: false
+    select: false,
   },
   passwordConfirm: {
     type: String,
@@ -33,12 +33,12 @@ const userSchema = new mongoose.Schema({
     validate: {
       // Only works on User.create() and User.save()
       // check if password and passwordConfirm are the same
-      validator: function(el) {
+      validator: function (el) {
         return el === this.password;
       },
-      message: 'Passwords are not the same !'
-    }
-  }
+      message: 'Passwords are not the same !',
+    },
+  },
   // passwordChangedAt: Date,
   // passwordResetToken: String,
   // passwordResetExpires: Date,
@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
 });
 
 // Check if candidatePassword is the user's password
-userSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
+userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
@@ -100,7 +100,7 @@ userSchema.methods.correctPassword = async function(candidatePassword, userPassw
 // });
 
 // Middleware to hash the password
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   // if password has not been modified, end and call next middleware
   if (!this.isModified('password')) return next();
 

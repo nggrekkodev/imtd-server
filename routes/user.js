@@ -5,9 +5,9 @@ const { getUsers, getUser, createUser, updateUser, deleteUser } = require('./../
 const { signup, login, protect, restrictTo } = require('./../controllers/authentification');
 
 // router.route('/signup').post(signup);
-router.route('/login').post(login);
 // router.route('/forgot-password').post(authController.forgotPassword);
 // router.route('/reset-password/:token').patch(authController.resetPassword);
+router.route('/login').post(login);
 
 // Protect all routes after this middleware
 router.use(protect);

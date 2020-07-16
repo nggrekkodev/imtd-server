@@ -21,22 +21,22 @@ const earth_distance = 6365.499; // distance from center of earth
 exports.getLocations = catchAsync(async (req, res, next) => {
   if (req.query.type) {
     req.query.type = { in: req.query.type.in.split(',') };
-    console.log(req.query.type);
+    // console.log(req.query.type);
   }
 
   if (req.query.sectors) {
     req.query.sectors = { in: req.query.sectors.in.split(',') };
-    console.log(req.query.sectors);
+    // console.log(req.query.sectors);
   }
 
   if (req.query.departmentName) {
     req.query.departmentName = { in: req.query.departmentName.in.split(',') };
-    console.log(req.query.departmentName);
+    // console.log(req.query.departmentName);
   }
 
   if (req.query.departmentCode) {
     req.query.departmentCode = { in: req.query.departmentCode.in.split(',') };
-    console.log(req.query.sector);
+    // console.log(req.query.sector);
   } else if (req.query.position) {
     const params = req.query.position.split(',');
     const radius = +params[0] / earth_distance || 300;
@@ -48,18 +48,18 @@ exports.getLocations = catchAsync(async (req, res, next) => {
 
   if (req.query.formationTypes) {
     req.query.formationTypes = { in: req.query.formationTypes.in.split(',') };
-    console.log(req.query.formationTypes);
+    // console.log(req.query.formationTypes);
   }
 
   if (req.query.formationLevels) {
     req.query.formationLevels = { in: req.query.formationLevels.in.split(',') };
-    console.log(req.query.formationLevels);
+    // console.log(req.query.formationLevels);
   }
 
   if (req.query.keyword) {
     const keyword = req.query.keyword;
     delete req.query.keyword;
-    console.log('-> keyword : ', keyword);
+    // console.log('-> keyword : ', keyword);
     req.query.keywordsRegex = { $regex: keyword, $options: '$i' };
 
     // const string = '';
@@ -107,7 +107,7 @@ exports.getLocation = catchAsync(async (req, res, next) => {
 });
 
 exports.createLocation = catchAsync(async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const location = await Location.create(req.body);
 
   res.status(200).json({
@@ -171,7 +171,7 @@ exports.getStats = catchAsync(async (req, res, next) => {
 });
 
 exports.uploadLogo = catchAsync(async (req, res, next) => {
-  console.log('req.params.id', req.params.id);
+  // console.log('req.params.id', req.params.id);
   // console.log('req.files', req.files);
   const location = await Location.findById(req.params.id);
 
@@ -205,7 +205,7 @@ exports.uploadLogo = catchAsync(async (req, res, next) => {
 
   file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
     if (err) {
-      console.error(err);
+      // console.error(err);
       return next(new AppError(`Problem with file upload`, 500));
     }
 

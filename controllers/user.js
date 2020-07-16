@@ -8,7 +8,7 @@ exports.getUsers = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     count: users.length,
-    data: users
+    data: users,
   });
 });
 
@@ -20,24 +20,24 @@ exports.getUser = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    data: user
+    data: user,
   });
 });
 
 exports.createUser = catchAsync(async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const user = await User.create(req.body);
 
   res.status(200).json({
     status: 'success',
-    data: user
+    data: user,
   });
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 
   if (!user) {
@@ -46,7 +46,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    data: user
+    data: user,
   });
 });
 
@@ -59,6 +59,6 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
 
   res.status(204).json({
     status: 'success',
-    data: null
+    data: null,
   });
 });
