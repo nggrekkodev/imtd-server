@@ -180,18 +180,18 @@ const locationSchema = new mongoose.Schema({
   formationLevels: {
     type: [String],
     required: function () {
-      console.log(this.type === TYPE_FORMATION);
+      // console.log(this.type === TYPE_FORMATION);
       return this.type === TYPE_FORMATION;
     },
     validate: {
       message: `Niveaux de formation non valides`,
       validator: function (elements) {
         if (this.type !== TYPE_FORMATION) {
-          console.log('formationLevels skip');
+          // console.log('formationLevels skip');
           return true;
         }
 
-        console.log(elements);
+        // console.log(elements);
 
         if (elements.length === 0) return false;
 
@@ -209,16 +209,16 @@ const locationSchema = new mongoose.Schema({
   formationTypes: {
     type: [String],
     required: function () {
-      console.log(this.type === TYPE_FORMATION);
+      // console.log(this.type === TYPE_FORMATION);
       return this.type === TYPE_FORMATION;
     },
     validate: {
       message: `Types de formation non valides`,
       validator: function (elements) {
-        console.log(elements);
+        // console.log(elements);
 
         if (this.type !== TYPE_FORMATION) {
-          console.log('formationTypes skip');
+          // console.log('formationTypes skip');
           return true;
         }
         if (elements.length === 0) return false;
@@ -282,7 +282,7 @@ locationSchema.pre('save', function (next) {
 
   // Add department name and code
   this.departmentCode = this.postCode.slice(0, 2);
-  console.log(this.departmentCode);
+  // console.log(this.departmentCode);
   department = departments.find((dep) => dep.code === this.departmentCode);
   if (department) {
     this.departmentName = department.name;
