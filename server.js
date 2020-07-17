@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 process.on('uncaughtException', (err) => {
   console.log(err.name, err.message);
   console.log('Uncaught Exception ! Shutting down');
-  process.exit(1); // Shutdown the app
+  process.exit(1); // Shutdown the process
 });
 
 // Read env variables from config.env file and save them into node env variables
@@ -35,7 +35,11 @@ mongoose
  * START SERVER
  */
 const port = process.env.PORT || 3000;
+
+// Import application
 const app = require('./app');
+
+// Start Server
 const server = app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
@@ -47,8 +51,8 @@ process.on('unhandledRejection', (err) => {
   console.log(err.name, err.message);
   console.log('Unhandled Rejection ! Shutting down');
 
-  // close the server first (handle last request/response)
+  // Close the server first (handle last request/response)
   server.close(() => {
-    process.exit(1); // then shutdown the app
+    process.exit(1); // Shutdown the process
   });
 });
