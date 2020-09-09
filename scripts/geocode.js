@@ -4,8 +4,8 @@ const XLSX = require('xlsx');
 
 const sheetsJson = {}; // each property is a sheet
 // const fileName = 'data_v5_cut.xlsx';
-const fileName = 'data.xlsx';
-const fileOutput = 'data.xlsx';
+const fileName = 'data.xlsx'; // excel input
+const fileOutput = 'data.xlsx'; // excel output
 let workbook;
 
 const geocoderAPI = 'https://api-adresse.data.gouv.fr/search/';
