@@ -13,7 +13,7 @@ router.route('/login').post(login);
 router.use(protect);
 
 // Protect all next routes, only admin can access these routes (+ protect middleware)
-router.use(restrictTo('admin'));
+// router.use(restrictTo('admin'));
 
 router.route('/').get(getUsers).post(createUser);
 
